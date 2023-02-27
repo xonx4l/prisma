@@ -230,7 +230,7 @@ jobs:
       - uses: actions/upload-artifact@v3
         if: github.event_name == 'schedule'
         with:
-          name: ${{ github.job }}_${{ matrix.os }}_node-${{ matrix.node }}_dataproxy_junit.xml
+          name: ${{ github.job }}_junit.xml
           path: packages/*/junit*.xml
 
   #
@@ -335,7 +335,7 @@ jobs:
       - uses: actions/upload-artifact@v3
         if: github.event_name == 'schedule'
         with:
-          name: ${{ github.job }}_${{ matrix.os }}_node-${{ matrix.node }}_dataproxy_junit.xml
+          name: ${{ github.job }}_junit.xml
           path: packages/*/junit*.xml
 
   #
@@ -598,7 +598,7 @@ jobs:
       - uses: actions/upload-artifact@v3
         if: github.event_name == 'schedule'
         with:
-          name: ${{ github.job }}_${{ matrix.os }}_node-${{ matrix.node }}_${{ matrix.queryEngine }}_junit.xml
+          name: ${{ github.job }}_junit.xml
           path: packages/*/junit*.xml
 
   #
@@ -1171,7 +1171,7 @@ jobs:
       - uses: actions/upload-artifact@v3
         if: github.event_name == 'schedule'
         with:
-          name: ${{ github.job }}_${{ matrix.os }}_node-${{ matrix.node }}_${{ matrix.queryEngine }}_junit.xml
+          name: ${{ github.job }}_junit.xml
           path: packages/*/junit*.xml
 
   no-docker:
@@ -1428,5 +1428,5 @@ jobs:
       - uses: actions/upload-artifact@v3
         if: github.event_name == 'schedule'
         with:
-          name: ${{ github.job }}_${{ matrix.os }}_node-${{ matrix.node }}_${{ matrix.queryEngine }}_junit.xml
+          name: ${{ github.job }}_junit.xml
           path: packages/*/junit*.xml
