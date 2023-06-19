@@ -68,6 +68,8 @@ services:
       - PRISMA_HIDE_UPDATE_MESSAGE="true"
       - SKIP_ECOSYSTEMTESTS_CHECK
       - SLACK_RELEASE_FEED_WEBHOOK
+      # Avoids OOM errors in CI
+      - NODE_OPTIONS="--max-old-space-size=8096"
     depends_on:
       - postgres
       - postgres_isolated
