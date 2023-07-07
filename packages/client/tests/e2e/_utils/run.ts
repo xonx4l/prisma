@@ -51,34 +51,44 @@ async function main() {
   console.log('🎠 Preparing e2e tests')
   // we first get all the paths we are going to need to run e2e tests
   const tmpDir = await fs.mkdtemp(path.join(os.tmpdir(), 'prisma-build'))
+
   const cliPkgPath = path.join(monorepoRoot, 'packages', 'cli')
   const wpPluginPkgPath = path.join(monorepoRoot, 'packages', 'nextjs-monorepo-workaround-plugin')
   const clientPkgPath = path.join(monorepoRoot, 'packages', 'client')
+  const generatorHelperPkgPath = path.join(monorepoRoot, 'packages', 'generator-helper')
+
   const cliPkgJsonPath = path.join(cliPkgPath, 'package.json')
   const clientPkgJsonPath = path.join(clientPkgPath, 'package.json')
+  const generatorHelperPkgJsonPath = path.join(generatorHelperPkgPath, 'package.json')
+
   const cliPkgJson = require(cliPkgJsonPath)
   const clientPkgJson = require(clientPkgJsonPath)
+  const generatorHelperPkgJson = require(generatorHelperPkgJsonPath)
 
   // this process will need to modify some package.json, we save copies
   await $`cd ${tmpDir} && cp ${cliPkgJsonPath} cli.package.json`
   await $`cd ${tmpDir} && cp ${clientPkgJsonPath} client.package.json`
+  await $`cd ${tmpDir} && cp ${generatorHelperPkgJsonPath} generator-helper.package.json`
 
   // we provide a function that can revert modified package.json back
   const restoreOriginal = async () => {
     await $`cd ${tmpDir} && cp cli.package.json ${cliPkgJsonPath}`
     await $`cd ${tmpDir} && cp client.package.json ${clientPkgJsonPath}`
+    await $`cd ${tmpDir} && cp generator-helper.package.json ${generatorHelperPkgJsonPath}`
   }
 
   // if process is killed by hand, ensure that package.json is restored
   process.on('SIGINT', () => restoreOriginal().then(() => process.exit(0)))
 
   // use bundleDependencies to directly include deps like @prisma/engines
-  cliPkgJson.bundleDependencies = Object.keys(cliPkgJson.dependencies)
-  clientPkgJson.bundleDependencies = Object.keys(clientPkgJson.dependencies)
+  cliPkgJson.bundleDependencies = Object.keys(cliPkgJson.dependencies as Record<string, string>)
+  clientPkgJson.bundleDependencies = Object.keys(clientPkgJson.dependencies as Record<string, string>)
+  generatorHelperPkgJson.bundleDependencies = Object.keys(generatorHelperPkgJson.dependencies as Record<string, string>)
 
   // write the modified package.json to overwrite the original package.json
   await fs.writeFile(cliPkgJsonPath, JSON.stringify(cliPkgJson, null, 2))
   await fs.writeFile(clientPkgJsonPath, JSON.stringify(clientPkgJson, null, 2))
+  await fs.writeFile(generatorHelperPkgJsonPath, JSON.stringify(generatorHelperPkgJson, null, 2))
 
   try {
     console.log('📦 Packing package tarballs')
@@ -86,11 +96,13 @@ async function main() {
     if (args['--skipBuild'] !== true) {
       await $`cd ${clientPkgPath} && pnpm build`
       await $`cd ${cliPkgPath} && pnpm build`
+      await $`cd ${generatorHelperPkgPath} && pnpm build`
     }
 
     await $`cd ${clientPkgPath} && pnpm pack --pack-destination ${__dirname}/../`
     await $`cd ${cliPkgPath} && pnpm pack --pack-destination ${__dirname}/../`
     await $`cd ${wpPluginPkgPath} && pnpm pack --pack-destination ${__dirname}/../`
+    await $`cd ${generatorHelperPkgPath} && pnpm pack --pack-destination ${__dirname}/../`
   } catch (e) {
     console.log(e.message)
     console.log('🛑 Failed to pack one or more of the packages')
