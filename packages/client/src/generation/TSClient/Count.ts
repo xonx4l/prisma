@@ -4,12 +4,13 @@ import indent from 'indent-string'
 import type { DMMFHelper } from '../dmmf'
 import { DMMF } from '../dmmf-types'
 import { GenericArgsInfo } from '../GenericsArgsInfo'
+import * as ts from '../ts-builders'
 import { capitalize, getFieldArgName, getSelectName } from '../utils'
 import { ArgsType, MinimalArgsType } from './Args'
 import { TAB_SIZE } from './constants'
 import type { Generatable } from './Generatable'
 import { TS } from './Generatable'
-import { OutputType } from './Output'
+import { buildOutputType } from './Output'
 
 export class Count implements Generatable {
   constructor(
@@ -42,14 +43,14 @@ export class Count implements Generatable {
   public toTS(): string {
     const { type } = this
     const { name } = type
-    const outputType = new OutputType(this.dmmf, this.type)
+    const outputType = buildOutputType(type)
 
     return `
 /**
  * Count Type ${name}
  */
 
-${outputType.toTS()}
+${ts.stringify(outputType)}
 
 export type ${getSelectName(name)}<ExtArgs extends $Extensions.Args = $Extensions.DefaultArgs> = {
 ${indent(
