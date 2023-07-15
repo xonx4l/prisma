@@ -240,8 +240,8 @@ importers:
         specifier: 4.3.4
         version: 4.3.4
       dotenv:
-        specifier: 16.0.3
-        version: 16.0.3
+        specifier: 16.3.1
+        version: 16.3.1
       esbuild:
         specifier: 0.15.13
         version: 0.15.13
@@ -969,8 +969,8 @@ importers:
         specifier: 2.1.0
         version: 2.1.0
       dotenv:
-        specifier: 16.0.3
-        version: 16.0.3
+        specifier: 16.3.1
+        version: 16.3.1
       escape-string-regexp:
         specifier: 4.0.0
         version: 4.0.0
@@ -6685,8 +6685,8 @@ packages:
       is-obj: 2.0.0
     dev: true
 
-  /dotenv@16.0.3:
-    resolution: {integrity: sha512-7GO6HghkA5fYG9TYnNxi14/7K9f5occMlp3zXAuSxn7CKCxt9xbNWG7yF8hTCSUchlfWSe3uLmlPfigevRItzQ==}
+  /dotenv@16.3.1:
+    resolution: {integrity: sha512-IPzF4w4/Rd94bA9imS68tZBaYyBWSCE47V1RGuMrB94iyTOIEwRmVL2x/4An+6mETpLrKJ5hQkB8W4kFAadeIQ==}
     engines: {node: '>=12'}
 
   /downgrade-root@1.2.2:

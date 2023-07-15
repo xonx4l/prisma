@@ -76,7 +76,7 @@
     "@types/rimraf": "3.0.2",
     "checkpoint-client": "1.1.24",
     "debug": "4.3.4",
-    "dotenv": "16.0.3",
+    "dotenv": "16.3.1",
     "esbuild": "0.15.13",
     "execa": "5.1.1",
     "fast-glob": "3.3.0",
